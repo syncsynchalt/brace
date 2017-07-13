@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <sys/ptrace.h>
 #include <sys/reg.h>
+#include "signames.h"
 
 #define die(s, args...) do { fprintf(stderr, s, ##args); fprintf(stderr, "\n"); exit(1); } while (0)
 static void run_strace(pid_t pid);
@@ -64,7 +65,8 @@ void run_strace(pid_t pid)
 #error "I don't know your arch"
 #endif
 
-		fprintf(stderr, "syscall(%d) = ", syscall);
+		char buf[64];
+		fprintf(stderr, "%s() = ", syscall_name(syscall, buf, sizeof(buf)));
 
 		if (wait_for_syscall(pid))
 			break;
