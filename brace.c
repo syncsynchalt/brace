@@ -4,9 +4,11 @@
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/ptrace.h>
 #include <sys/reg.h>
-#include "signames.h"
+#include "callnames.h"
 
 #define die(s, args...) do { fprintf(stderr, s, ##args); fprintf(stderr, "\n"); exit(1); } while (0)
 static void run_strace(pid_t pid);
@@ -29,7 +31,7 @@ int main(int argc, char **argv)
 	} else {
 		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
 		kill(getpid(), SIGSTOP);
-		execvpe(argv[1], &(argv[1]), environ);
+		execvp(argv[1], &(argv[1]));
 		die("Couldn't exec %s: %s", argv[1], strerror(errno));
 	}
 	return 0;

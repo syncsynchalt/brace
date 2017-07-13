@@ -1,5 +1,5 @@
 SOURCE=$(wildcard *.c)
-OBJECTS=$(patsubst .c, .o, $(SOURCE))
+OBJECTS=$(subst .c,.o,$(SOURCE))
 CFLAGS=-Wall -ggdb
 
 brace: $(OBJECTS)
@@ -7,3 +7,6 @@ brace: $(OBJECTS)
 
 clean:
 	rm -f *.o brace
+
+test: brace
+	./brace ls -al
